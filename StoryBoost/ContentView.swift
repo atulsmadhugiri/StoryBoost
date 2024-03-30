@@ -23,6 +23,15 @@ struct ContentView: View {
 
   var body: some View {
     VStack {
+      if let selectedMediaData {
+        if let uiImage = UIImage(data: selectedMediaData) {
+          Image(uiImage: uiImage).resizable().cornerRadius(8).aspectRatio(contentMode: .fit)
+            .frame(width: 360, height: 600).padding().scaledToFit()
+        }
+      } else {
+        Color.gray.opacity(0.1).cornerRadius(8).frame(width: 360, height: 600).padding()
+      }
+
       PhotosPicker(
         selection: $imageSelection, matching: .all(of: [.images, .not(.livePhotos)]),
         photoLibrary: .shared()
@@ -31,17 +40,6 @@ struct ContentView: View {
           .symbolRenderingMode(.multicolor)
           .font(.system(size: 30))
           .foregroundColor(.blue)
-      }
-
-      ZStack {
-        if let selectedMediaData {
-          if let uiImage = UIImage(data: selectedMediaData) {
-            Image(uiImage: uiImage).resizable().cornerRadius(8).aspectRatio(contentMode: .fit)
-              .frame(width: 360, height: 600).padding().scaledToFit()
-          }
-        } else {
-          Color.gray.opacity(0.1).cornerRadius(8).frame(width: 360, height: 600).padding()
-        }
       }
 
     }.onChange(of: imageSelection) {
