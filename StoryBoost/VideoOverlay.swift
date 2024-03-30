@@ -32,22 +32,22 @@ func overlayImageOnVideo(imagePath: String, videoURL: URL, outputURL: URL) async
       withMediaType: .video, preferredTrackID: Int32(kCMPersistentTrackID_Invalid)),
     let audioTrack = mixComposition.addMutableTrack(
       withMediaType: .audio, preferredTrackID: Int32(kCMPersistentTrackID_Invalid)),
-    let assetVideoTrack = asset.tracks(withMediaType: .video).first,
-    let assetAudioTrack = asset.tracks(withMediaType: .audio).first
+    let assetVideoTrack = try await asset.loadTracks(withMediaType: .video).first,
+    let assetAudioTrack = try await asset.loadTracks(withMediaType: .audio).first
   else {
     throw VideoExportError.trackCreationFailed
   }
 
   do {
-    try videoTrack.insertTimeRange(
-      CMTimeRangeMake(start: .zero, duration: asset.duration), of: assetVideoTrack, at: .zero)
-    try audioTrack.insertTimeRange(
-      CMTimeRangeMake(start: .zero, duration: asset.duration), of: assetAudioTrack, at: .zero)
+    try await videoTrack.insertTimeRange(
+      CMTimeRangeMake(start: .zero, duration: asset.load(.duration)), of: assetVideoTrack, at: .zero)
+    try await audioTrack.insertTimeRange(
+      CMTimeRangeMake(start: .zero, duration: asset.load(.duration)), of: assetAudioTrack, at: .zero)
   } catch {
     throw VideoExportError.timeRangeInsertionFailed
   }
 
-  let videoSize = assetVideoTrack.naturalSize
+  let videoSize = try await assetVideoTrack.load(.naturalSize)
   let videoLayerFrame = CGRect(x: 0, y: 0, width: videoSize.width, height: videoSize.height)
   let overlayLayerFrame = CGRect(
     x: 0, y: videoSize.height / 2, width: videoSize.width, height: videoSize.height / 2)
@@ -74,7 +74,7 @@ func overlayImageOnVideo(imagePath: String, videoURL: URL, outputURL: URL) async
     postProcessingAsVideoLayer: videoLayer, in: parentLayer)
 
   let instruction = AVMutableVideoCompositionInstruction()
-  instruction.timeRange = CMTimeRangeMake(start: .zero, duration: asset.duration)
+  instruction.timeRange = try await CMTimeRangeMake(start: .zero, duration: asset.load(.duration))
   let layerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: videoTrack)
   instruction.layerInstructions = [layerInstruction]
   videoComposition.instructions = [instruction]
