@@ -35,19 +35,35 @@ struct ContentView: View {
         Color.gray
           .opacity(0.1)
           .cornerRadius(8)
-          .frame(width: 360, height: 600)
+          .frame(width: 360, height: 360)
           .padding()
       }
 
-      PhotosPicker(
-        selection: $imageSelection, matching: .all(of: [.images, .not(.livePhotos)]),
-        photoLibrary: .shared()
-      ) {
-        Image(systemName: "photo.circle.fill")
-          .symbolRenderingMode(.multicolor)
-          .font(.system(size: 30))
-          .foregroundColor(.blue)
-      }
+      HStack {
+        PhotosPicker(
+          selection: $imageSelection, matching: .all(of: [.images, .not(.livePhotos)]),
+          photoLibrary: .shared()
+        ) {
+          Button {
+          } label: {
+            HStack {
+              Image(systemName: "photo").frame(height: 20)
+              Text("Select image")
+            }.frame(maxWidth: .infinity)
+          }.buttonStyle(.bordered)
+            .tint(.blue)
+            .allowsHitTesting(false)
+        }
+
+        Button {
+        } label: {
+          HStack {
+            Image(systemName: "sparkles").frame(height: 20)
+            Text("Pimp my story")
+          }.frame(maxWidth: .infinity)
+        }.buttonStyle(.bordered).tint(.orange)
+
+      }.padding()
 
     }.onChange(of: imageSelection) {
       if let imageSelection {
