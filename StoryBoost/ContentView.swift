@@ -28,7 +28,7 @@ struct ContentView: View {
           Image(uiImage: uiImage)
             .resizable()
             .cornerRadius(8)
-            .padding()
+            .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
             .scaledToFit()
         }
       } else {
@@ -36,7 +36,7 @@ struct ContentView: View {
           .opacity(0.1)
           .cornerRadius(8)
           .frame(width: 360, height: 360)
-          .padding()
+          .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
       }
 
       HStack {
@@ -63,7 +63,7 @@ struct ContentView: View {
           }.frame(maxWidth: .infinity)
         }.buttonStyle(.bordered).tint(.orange)
 
-      }.padding()
+      }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
 
     }.onChange(of: imageSelection) {
       if let imageSelection {
