@@ -28,26 +28,42 @@ struct ContentView: View {
           Image(uiImage: uiImage)
             .resizable()
             .cornerRadius(8)
-            .padding()
+            .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
             .scaledToFit()
         }
       } else {
         Color.gray
           .opacity(0.1)
           .cornerRadius(8)
-          .frame(width: 360, height: 600)
-          .padding()
+          .frame(width: 360, height: 360)
+          .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
       }
 
-      PhotosPicker(
-        selection: $imageSelection, matching: .all(of: [.images, .not(.livePhotos)]),
-        photoLibrary: .shared()
-      ) {
-        Image(systemName: "photo.circle.fill")
-          .symbolRenderingMode(.multicolor)
-          .font(.system(size: 30))
-          .foregroundColor(.blue)
-      }
+      HStack {
+        PhotosPicker(
+          selection: $imageSelection, matching: .all(of: [.images, .not(.livePhotos)]),
+          photoLibrary: .shared()
+        ) {
+          Button {
+          } label: {
+            HStack {
+              Image(systemName: "photo").frame(height: 20)
+              Text("Select image")
+            }.frame(maxWidth: .infinity)
+          }.buttonStyle(.bordered)
+            .tint(.blue)
+            .allowsHitTesting(false)
+        }
+
+        Button {
+        } label: {
+          HStack {
+            Image(systemName: "sparkles").frame(height: 20)
+            Text("Pimp my story")
+          }.frame(maxWidth: .infinity)
+        }.buttonStyle(.bordered).tint(.orange)
+
+      }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
 
     }.onChange(of: imageSelection) {
       if let imageSelection {
