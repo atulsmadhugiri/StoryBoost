@@ -25,11 +25,18 @@ struct ContentView: View {
     VStack {
       if let selectedMediaData {
         if let uiImage = UIImage(data: selectedMediaData) {
-          Image(uiImage: uiImage).resizable().cornerRadius(8).aspectRatio(contentMode: .fit)
-            .frame(width: 360, height: 600).padding().scaledToFit()
+          Image(uiImage: uiImage)
+            .resizable()
+            .cornerRadius(8)
+            .padding()
+            .scaledToFit()
         }
       } else {
-        Color.gray.opacity(0.1).cornerRadius(8).frame(width: 360, height: 600).padding()
+        Color.gray
+          .opacity(0.1)
+          .cornerRadius(8)
+          .frame(width: 360, height: 600)
+          .padding()
       }
 
       PhotosPicker(
