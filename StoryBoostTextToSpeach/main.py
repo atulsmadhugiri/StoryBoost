@@ -9,10 +9,10 @@ from pydub import AudioSegment
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
-import secrets
+import codes
 # Constants
 CHUNK_SIZE = 1024
-XI_API_KEY = secrets.api_key # Replace with your actual API key
+XI_API_KEY = codes.api_key # Replace with your actual API key
 CONVERSATION_FILE = "conversation.json"
 OUTPUT_FOLDER = "output_conversation"
 
