@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+<body>
+    <div id="welcome">
+        <h1>Welcome to the Conversation Generator</h1>
+        <button id="startBtn">Start Creating Conversation</button>
+    </div>
+    <div id="createConversation" class="hidden">
+        <form id="conversationForm">
+            <div id="conversationParts"></div>
+            <button type="button" id="addPartBtn">Add Another Person</button>
+            <button type="submit">Generate Conversation</button>
+        </form>
+    </div>
+</body>
+</html>
