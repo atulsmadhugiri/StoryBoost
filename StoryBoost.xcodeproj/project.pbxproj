@@ -12,6 +12,7 @@
 		B70754FB2BB868E1005F72D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B70754FA2BB868E1005F72D3 /* Assets.xcassets */; };
 		B70754FE2BB868E1005F72D3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B70754FD2BB868E1005F72D3 /* Preview Assets.xcassets */; };
 		B734C1202BB8693A00CAFAAE /* VideoOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B734C11F2BB8693A00CAFAAE /* VideoOverlay.swift */; };
+		B734C1232BB89CC800CAFAAE /* subway.mov in Resources */ = {isa = PBXBuildFile; fileRef = B734C1222BB89CC800CAFAAE /* subway.mov */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +22,8 @@
 		B70754FA2BB868E1005F72D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B70754FD2BB868E1005F72D3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B734C11F2BB8693A00CAFAAE /* VideoOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoOverlay.swift; sourceTree = "<group>"; };
+		B734C1222BB89CC800CAFAAE /* subway.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = subway.mov; sourceTree = "<group>"; };
+		B734C1242BB8A0DB00CAFAAE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +56,8 @@
 		B70754F52BB868E0005F72D3 /* StoryBoost */ = {
 			isa = PBXGroup;
 			children = (
+				B734C1242BB8A0DB00CAFAAE /* Info.plist */,
+				B734C1212BB89CBA00CAFAAE /* Resources */,
 				B70754F62BB868E0005F72D3 /* StoryBoostApp.swift */,
 				B70754F82BB868E0005F72D3 /* ContentView.swift */,
 				B70754FA2BB868E1005F72D3 /* Assets.xcassets */,
@@ -68,6 +73,14 @@
 				B70754FD2BB868E1005F72D3 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		B734C1212BB89CBA00CAFAAE /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B734C1222BB89CC800CAFAAE /* subway.mov */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -128,6 +141,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B734C1232BB89CC800CAFAAE /* subway.mov in Resources */,
 				B70754FE2BB868E1005F72D3 /* Preview Assets.xcassets in Resources */,
 				B70754FB2BB868E1005F72D3 /* Assets.xcassets in Resources */,
 			);
@@ -279,6 +293,7 @@
 				DEVELOPMENT_TEAM = HM6Y2RQS2R;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StoryBoost/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -308,6 +323,7 @@
 				DEVELOPMENT_TEAM = HM6Y2RQS2R;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StoryBoost/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

@@ -1,5 +1,3 @@
-import Foundation
-
 import AVFoundation
 import CoreGraphics
 import Foundation
@@ -13,9 +11,9 @@ enum VideoExportError: Error {
   case imageLoadingFailed
 }
 
-func overlayImageOnVideo(imagePath: String, videoURL: URL, outputURL: URL) async throws {
+func overlayImageOnVideo(imagePath: URL, outputURL: URL) async throws {
   // Load image using CoreGraphics
-  guard let imageDataProvider = CGDataProvider(url: URL(fileURLWithPath: imagePath) as CFURL),
+  guard let imageDataProvider = CGDataProvider(url: imagePath as CFURL),
     let cgImage = CGImage(
       pngDataProviderSource: imageDataProvider, decode: nil, shouldInterpolate: true,
       intent: .defaultIntent)
@@ -25,29 +23,29 @@ func overlayImageOnVideo(imagePath: String, videoURL: URL, outputURL: URL) async
 
   let mixComposition = AVMutableComposition()
 
-  let asset = AVAsset(url: videoURL)
+  let asset = AVAsset(url: Bundle.main.url(forResource: "subway", withExtension: "mov")!)
 
   guard
     let videoTrack = mixComposition.addMutableTrack(
       withMediaType: .video, preferredTrackID: Int32(kCMPersistentTrackID_Invalid)),
     let audioTrack = mixComposition.addMutableTrack(
       withMediaType: .audio, preferredTrackID: Int32(kCMPersistentTrackID_Invalid)),
-    let assetVideoTrack = try await asset.loadTracks(withMediaType: .video).first,
-    let assetAudioTrack = try await asset.loadTracks(withMediaType: .audio).first
+    let assetVideoTrack = asset.tracks(withMediaType: .video).first,
+    let assetAudioTrack = asset.tracks(withMediaType: .audio).first
   else {
     throw VideoExportError.trackCreationFailed
   }
 
   do {
-    try await videoTrack.insertTimeRange(
-      CMTimeRangeMake(start: .zero, duration: asset.load(.duration)), of: assetVideoTrack, at: .zero)
-    try await audioTrack.insertTimeRange(
-      CMTimeRangeMake(start: .zero, duration: asset.load(.duration)), of: assetAudioTrack, at: .zero)
+    try videoTrack.insertTimeRange(
+      CMTimeRangeMake(start: .zero, duration: asset.duration), of: assetVideoTrack, at: .zero)
+    try audioTrack.insertTimeRange(
+      CMTimeRangeMake(start: .zero, duration: asset.duration), of: assetAudioTrack, at: .zero)
   } catch {
     throw VideoExportError.timeRangeInsertionFailed
   }
 
-  let videoSize = try await assetVideoTrack.load(.naturalSize)
+  let videoSize = assetVideoTrack.naturalSize
   let videoLayerFrame = CGRect(x: 0, y: 0, width: videoSize.width, height: videoSize.height)
   let overlayLayerFrame = CGRect(
     x: 0, y: videoSize.height / 2, width: videoSize.width, height: videoSize.height / 2)
@@ -74,7 +72,7 @@ func overlayImageOnVideo(imagePath: String, videoURL: URL, outputURL: URL) async
     postProcessingAsVideoLayer: videoLayer, in: parentLayer)
 
   let instruction = AVMutableVideoCompositionInstruction()
-  instruction.timeRange = try await CMTimeRangeMake(start: .zero, duration: asset.load(.duration))
+  instruction.timeRange = CMTimeRangeMake(start: .zero, duration: asset.duration)
   let layerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: videoTrack)
   instruction.layerInstructions = [layerInstruction]
   videoComposition.instructions = [instruction]
@@ -86,7 +84,7 @@ func overlayImageOnVideo(imagePath: String, videoURL: URL, outputURL: URL) async
     throw VideoExportError.exportSessionCreationFailed
   }
   exporter.outputURL = outputURL
-  exporter.outputFileType = .mp4
+  exporter.outputFileType = .mov
   exporter.shouldOptimizeForNetworkUse = true
   exporter.videoComposition = videoComposition
 

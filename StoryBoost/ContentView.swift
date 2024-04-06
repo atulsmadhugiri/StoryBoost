@@ -7,8 +7,8 @@ struct TransferableImageSelection: Transferable {
 
   static var transferRepresentation: some TransferRepresentation {
     DataRepresentation(importedContentType: .image) { data in
-      if let jpegData = UIImage(data: data)?.jpegData(compressionQuality: 0.75) {
-        return TransferableImageSelection(image: jpegData)
+      if let pngData = UIImage(data: data)?.pngData() {
+        return TransferableImageSelection(image: pngData)
       } else {
         return TransferableImageSelection(image: data)
       }
@@ -20,23 +20,44 @@ struct ContentView: View {
   @State private var player = AVPlayer()
   @State private var selectedMediaData: Data?
   @State private var imageSelection: PhotosPickerItem?
+  @State private var videoURL: URL?
 
   var body: some View {
     VStack {
-      if let selectedMediaData {
-        if let uiImage = UIImage(data: selectedMediaData) {
-          Image(uiImage: uiImage)
-            .resizable()
-            .cornerRadius(8)
-            .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-            .scaledToFit()
+
+      if let videoURL {
+        ZStack {
+          VideoPlayer(player: player)
+            .edgesIgnoringSafeArea(.all)
+            .navigationBarBackButtonHidden()
+            .onAppear {
+              let url = videoURL
+              player = AVPlayer(url: url)
+              player.play()
+
+            }
+            .onDisappear {
+              player.pause()
+            }.frame(width: 278, height: 600).cornerRadius(8)
+          Color.gray.opacity(0.1).cornerRadius(8).frame(width: 360, height: 600).padding()
         }
       } else {
-        Color.gray
-          .opacity(0.1)
-          .cornerRadius(8)
-          .frame(width: 360, height: 360)
-          .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+        if let selectedMediaData {
+          if let uiImage = UIImage(data: selectedMediaData) {
+            Image(uiImage: uiImage)
+              .resizable()
+              .cornerRadius(8)
+              .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+              .scaledToFit()
+          }
+        } else {
+          Color.gray
+            .opacity(0.1)
+            .cornerRadius(8)
+            .frame(width: 360, height: 360)
+            .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+        }
+
       }
 
       HStack {
@@ -56,6 +77,28 @@ struct ContentView: View {
         }
 
         Button {
+
+          if let selectedMediaData {
+
+            Task {
+
+              let destination = URL(fileURLWithPath: NSTemporaryDirectory())
+                .appendingPathComponent(UUID().uuidString).appendingPathExtension("mov")
+
+              let mediaPath = URL(fileURLWithPath: NSTemporaryDirectory())
+                .appendingPathComponent(UUID().uuidString).appendingPathExtension("png")
+              
+              do {
+                try selectedMediaData.write(to: mediaPath)
+                try await overlayImageOnVideo(imagePath: mediaPath, outputURL: destination)
+                self.videoURL = destination
+              } catch {
+                print(error)
+              }
+              
+            }
+          }
+
         } label: {
           HStack {
             Image(systemName: "sparkles").frame(height: 20)
