@@ -113,6 +113,7 @@ struct ContentView: View {
           switch result {
           case .success(let img?):
             self.selectedMediaData = img.image
+            self.videoURL = nil
             print("Image selected successfully!")
           case .success(.none):
             print("No image selected.")
