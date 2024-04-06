@@ -39,7 +39,6 @@ struct ContentView: View {
             .onDisappear {
               player.pause()
             }.frame(width: 278, height: 600).cornerRadius(8)
-          Color.gray.opacity(0.1).cornerRadius(8).frame(width: 360, height: 600).padding()
         }
       } else {
         if let selectedMediaData {
