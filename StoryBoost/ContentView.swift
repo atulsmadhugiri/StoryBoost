@@ -60,21 +60,19 @@ struct ContentView: View {
 
       }
 
-      HStack {
-        Button {
-          if let videoURL {
+      if let videoURL {
+        HStack {
+          Button {
             Task {
               try await saveVideo(url: videoURL)
             }
-          }
-        } label: {
-          HStack {
-            Image(systemName: "arrow.down.square.fill").frame(height: 20)
-            Text("Save video")
-          }.frame(maxWidth: .infinity)
-        }.buttonStyle(.bordered).tint(.green)
+          } label: {
+            HStack {
+              Image(systemName: "arrow.down.square.fill").frame(height: 20)
+              Text("Save video")
+            }.frame(maxWidth: .infinity)
+          }.buttonStyle(.bordered).tint(.green)
 
-        if let videoURL {
           Button {
           } label: {
             HStack {
@@ -84,9 +82,9 @@ struct ContentView: View {
               }.frame(maxWidth: .infinity)
             }
           }.buttonStyle(.bordered).tint(.gray)
-        }
 
-      }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+        }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+      }
 
       Divider()
 
