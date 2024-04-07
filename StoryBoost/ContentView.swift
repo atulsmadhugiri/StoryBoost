@@ -132,8 +132,10 @@ struct ContentView: View {
 
         } label: {
           HStack {
-            Image(systemName: "sparkles").frame(height: 20)
-            Text("Pimp my story")
+            Image(systemName: "sparkles")
+              .symbolEffect(.pulse, isActive: self.pimpingInProgress)
+              .frame(height: 20)
+            Text(self.pimpingInProgress ? "Pimping..." : "Pimp my story")
           }.frame(maxWidth: .infinity)
         }.buttonStyle(.bordered).tint(.orange)
 
