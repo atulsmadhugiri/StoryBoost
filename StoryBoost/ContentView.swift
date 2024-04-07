@@ -73,12 +73,16 @@ struct ContentView: View {
           }.frame(maxWidth: .infinity)
         }.buttonStyle(.bordered).tint(.green)
 
-        Button {
-        } label: {
-          HStack {
-            Image(systemName: "square.and.arrow.up").frame(height: 20)
-          }
-        }.buttonStyle(.bordered).tint(.gray)
+        if let videoURL {
+          Button {
+          } label: {
+            HStack {
+              ShareLink(item: videoURL) {
+                Image(systemName: "square.and.arrow.up").frame(height: 20)
+              }
+            }
+          }.buttonStyle(.bordered).tint(.gray)
+        }
 
       }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
 
