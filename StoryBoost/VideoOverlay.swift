@@ -1,6 +1,7 @@
 import AVFoundation
 import CoreGraphics
 import Foundation
+import UIKit.UIImage
 
 enum VideoExportError: Error {
   case assetCreationFailed
@@ -12,14 +13,12 @@ enum VideoExportError: Error {
 }
 
 func overlayImageOnVideo(imagePath: URL, outputURL: URL) async throws {
-  // Load image using CoreGraphics
-  guard let imageDataProvider = CGDataProvider(url: imagePath as CFURL),
-    let cgImage = CGImage(
-      pngDataProviderSource: imageDataProvider, decode: nil, shouldInterpolate: true,
-      intent: .defaultIntent)
-  else {
-    throw VideoExportError.imageLoadingFailed
+  var imageNeedsRotation = false
+  let uiImage = UIImage(contentsOfFile: imagePath.path())
+  if uiImage?.imageOrientation == .right {
+    imageNeedsRotation = true
   }
+  let cgImage = uiImage!.cgImage
 
   let mixComposition = AVMutableComposition()
 
@@ -38,9 +37,11 @@ func overlayImageOnVideo(imagePath: URL, outputURL: URL) async throws {
 
   do {
     try await videoTrack.insertTimeRange(
-      CMTimeRangeMake(start: .zero, duration: asset.load(.duration)), of: assetVideoTrack, at: .zero)
+      CMTimeRangeMake(start: .zero, duration: asset.load(.duration)), of: assetVideoTrack, at: .zero
+    )
     try await audioTrack.insertTimeRange(
-      CMTimeRangeMake(start: .zero, duration: asset.load(.duration)), of: assetAudioTrack, at: .zero)
+      CMTimeRangeMake(start: .zero, duration: asset.load(.duration)), of: assetAudioTrack, at: .zero
+    )
   } catch {
     throw VideoExportError.timeRangeInsertionFailed
   }
@@ -54,8 +55,11 @@ func overlayImageOnVideo(imagePath: URL, outputURL: URL) async throws {
   overlayLayer.contents = cgImage
   overlayLayer.contentsGravity = .resizeAspectFill
   overlayLayer.frame = overlayLayerFrame
-  let rotation = CATransform3DMakeRotation(1.5 * .pi, 0, 0, 1)  // 90 degrees in radians
-  overlayLayer.transform = rotation
+
+  if imageNeedsRotation {
+    let rotation = CATransform3DMakeRotation(1.5 * .pi, 0, 0, 1)  // 90 degrees in radians
+    overlayLayer.transform = rotation
+  }
 
   let videoLayer = CALayer()
   videoLayer.frame = videoLayerFrame
