@@ -104,10 +104,8 @@ struct ContentView: View {
             .allowsHitTesting(false)
         }
 
-        Button {
-
-          if let selectedMediaData {
-
+        if let selectedMediaData {
+          Button {
             self.pimpingInProgress = true
             Task {
               let destination = URL(fileURLWithPath: NSTemporaryDirectory())
@@ -124,18 +122,16 @@ struct ContentView: View {
               } catch {
                 print(error)
               }
-
             }
-          }
-
-        } label: {
-          HStack {
-            Image(systemName: "sparkles")
-              .symbolEffect(.pulse, isActive: self.pimpingInProgress)
-              .frame(height: 20)
-            Text(self.pimpingInProgress ? "Pimping..." : "Pimp my story")
-          }.frame(maxWidth: .infinity)
-        }.buttonStyle(.bordered).tint(.orange)
+          } label: {
+            HStack {
+              Image(systemName: "sparkles")
+                .symbolEffect(.pulse, isActive: self.pimpingInProgress)
+                .frame(height: 20)
+              Text(self.pimpingInProgress ? "Pimping..." : "Pimp my story")
+            }.frame(maxWidth: .infinity)
+          }.buttonStyle(.bordered).tint(.orange)
+        }
 
       }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
 
