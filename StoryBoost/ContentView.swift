@@ -79,7 +79,8 @@ struct ContentView: View {
             HStack {
               ShareLink(item: videoURL) {
                 Image(systemName: "square.and.arrow.up").frame(height: 20)
-              }
+                Text("Share video")
+              }.frame(maxWidth: .infinity)
             }
           }.buttonStyle(.bordered).tint(.gray)
         }
