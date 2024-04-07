@@ -60,6 +60,26 @@ struct ContentView: View {
       }
 
       HStack {
+        Button {
+        } label: {
+          HStack {
+            Image(systemName: "arrow.down.square.fill").frame(height: 20)
+            Text("Save video")
+          }.frame(maxWidth: .infinity)
+        }.buttonStyle(.bordered).tint(.green)
+
+        Button {
+        } label: {
+          HStack {
+            Image(systemName: "square.and.arrow.up").frame(height: 20)
+          }
+        }.buttonStyle(.bordered).tint(.gray)
+
+      }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+
+      Divider()
+
+      HStack {
         PhotosPicker(
           selection: $imageSelection, matching: .all(of: [.images, .not(.livePhotos)]),
           photoLibrary: .shared()
@@ -86,7 +106,7 @@ struct ContentView: View {
 
               let mediaPath = URL(fileURLWithPath: NSTemporaryDirectory())
                 .appendingPathComponent(UUID().uuidString).appendingPathExtension("png")
-              
+
               do {
                 try selectedMediaData.write(to: mediaPath)
                 try await overlayImageOnVideo(imagePath: mediaPath, outputURL: destination)
@@ -94,7 +114,7 @@ struct ContentView: View {
               } catch {
                 print(error)
               }
-              
+
             }
           }
 
