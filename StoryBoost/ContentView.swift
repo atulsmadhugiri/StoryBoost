@@ -70,7 +70,7 @@ struct ContentView: View {
           } label: {
             HStack {
               Image(systemName: "arrow.down.square.fill").frame(height: 20)
-              Text("Save video")
+              Text("Save")
             }.frame(maxWidth: .infinity)
           }.buttonStyle(.bordered).tint(.green)
 
@@ -79,7 +79,7 @@ struct ContentView: View {
             HStack {
               ShareLink(item: videoURL) {
                 Image(systemName: "square.and.arrow.up").frame(height: 20)
-                Text("Share video")
+                Text("Share")
               }.frame(maxWidth: .infinity)
             }
           }.buttonStyle(.bordered).tint(.gray)
