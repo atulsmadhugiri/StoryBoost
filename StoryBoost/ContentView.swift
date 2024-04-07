@@ -21,6 +21,7 @@ struct ContentView: View {
   @State private var selectedMediaData: Data?
   @State private var imageSelection: PhotosPickerItem?
   @State private var videoURL: URL?
+  @State private var pimpingInProgress: Bool = false
 
   var body: some View {
     VStack {
@@ -109,8 +110,8 @@ struct ContentView: View {
 
           if let selectedMediaData {
 
+            self.pimpingInProgress = true
             Task {
-
               let destination = URL(fileURLWithPath: NSTemporaryDirectory())
                 .appendingPathComponent(UUID().uuidString).appendingPathExtension("mov")
 
@@ -120,6 +121,7 @@ struct ContentView: View {
               do {
                 try selectedMediaData.write(to: mediaPath)
                 try await overlayImageOnVideo(imagePath: mediaPath, outputURL: destination)
+                self.pimpingInProgress = false
                 self.videoURL = destination
               } catch {
                 print(error)
