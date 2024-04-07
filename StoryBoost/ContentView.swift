@@ -17,7 +17,8 @@ struct TransferableImageSelection: Transferable {
 }
 
 struct ContentView: View {
-  @State private var player = AVPlayer()
+  @State private var player = AVQueuePlayer()
+  @State private var playerLooper: AVPlayerLooper? = nil
   @State private var selectedMediaData: Data?
   @State private var imageSelection: PhotosPickerItem?
   @State private var videoURL: URL?
@@ -32,10 +33,10 @@ struct ContentView: View {
             .edgesIgnoringSafeArea(.all)
             .navigationBarBackButtonHidden()
             .onAppear {
-              let url = videoURL
-              player = AVPlayer(url: url)
+              let playerItem = AVPlayerItem(url: videoURL)
+              player = AVQueuePlayer(playerItem: playerItem)
+              playerLooper = AVPlayerLooper(player: player, templateItem: playerItem)
               player.play()
-
             }
             .onDisappear {
               player.pause()
