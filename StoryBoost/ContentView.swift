@@ -61,6 +61,11 @@ struct ContentView: View {
 
       HStack {
         Button {
+          if let videoURL {
+            Task {
+              try await saveVideo(url: videoURL)
+            }
+          }
         } label: {
           HStack {
             Image(systemName: "arrow.down.square.fill").frame(height: 20)
