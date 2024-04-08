@@ -53,7 +53,7 @@ struct ContentView: View {
           }
         } else {
           Color.gray
-            .opacity(0.1)
+            .opacity(0.2)
             .cornerRadius(8)
             .frame(width: 360, height: 360)
             .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
